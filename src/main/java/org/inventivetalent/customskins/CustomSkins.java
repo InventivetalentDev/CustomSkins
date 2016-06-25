@@ -17,8 +17,6 @@ import org.inventivetalent.pluginannotations.command.Permission;
 import org.inventivetalent.skullclient.SkullCallback;
 import org.inventivetalent.skullclient.SkullClient;
 import org.inventivetalent.skullclient.SkullData;
-import org.inventivetalent.update.spiget.SpigetUpdate;
-import org.inventivetalent.update.spiget.UpdateCallback;
 import org.mcstats.MetricsLite;
 
 import java.io.*;
@@ -56,18 +54,18 @@ public class CustomSkins extends JavaPlugin implements Listener {
 		} catch (Exception e) {
 		}
 
-		SpigetUpdate spigetUpdate = new SpigetUpdate(this, 25417);
-		spigetUpdate.checkForUpdate(new UpdateCallback() {
-			@Override
-			public void updateAvailable(String s, String s1, boolean b) {
-				getLogger().info("There is a new version available (" + s + "). Download it here: https://r.spiget.org/25417");
-			}
-
-			@Override
-			public void upToDate() {
-				getLogger().info("The plugin is up-to-date");
-			}
-		});
+//		SpigetUpdate spigetUpdate = new SpigetUpdate(this, 25417);
+//		spigetUpdate.checkForUpdate(new UpdateCallback() {
+//			@Override
+//			public void updateAvailable(String s, String s1, boolean b) {
+//				getLogger().info("There is a new version available (" + s + "). Download it here: https://r.spiget.org/25417");
+//			}
+//
+//			@Override
+//			public void upToDate() {
+//				getLogger().info("The plugin is up-to-date");
+//			}
+//		});
 	}
 
 	@Command(name = "createCustomSkin",
