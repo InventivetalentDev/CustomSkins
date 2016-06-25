@@ -1,0 +1,6 @@
+name: CustomSkins
+main: org.inventivetalent.customskins.CustomSkins
+author: inventivetalent
+version: ${project.version}
+
+softdepend: [NickNamer]
