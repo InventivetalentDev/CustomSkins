@@ -54,6 +54,7 @@
                                     <include>org.inventivetalent:customskins**</include>
                                     <include>org.inventivetalent:skullclient**</include>
                                     <include>org.inventivetalent:pluginannotations**</include>
+                                    <include>org.inventivetalent.spiget-update:bukkit**</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
