@@ -81,6 +81,8 @@ public class CustomSkins extends JavaPlugin implements Listener {
 				public void error(String s) {
 					sender.sendMessage("§cError while generating skin: " + s);
 					sender.sendMessage("§cPlease make sure the image is a valid skin texture and try again.");
+
+					skinFile.delete();
 				}
 
 				@Override
