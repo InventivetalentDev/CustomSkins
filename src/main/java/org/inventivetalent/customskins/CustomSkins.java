@@ -72,16 +72,17 @@ public class CustomSkins extends JavaPlugin implements Listener {
 
 	@Command(name = "createCustomSkin",
 			 aliases = { "createSkin" },
-			 usage = "<Name> <URL>",
+			 usage = "<Name> <URL> [private]",
 			 description = "Create a custom skin from the specified image url",
 			 min = 2,
-			 max = 2,
+			 max = 3,
 			 fallbackPrefix = "customskins")
 	@Permission("customskins.create")
-	public void createSkin(final CommandSender sender, String name, String urlString) {
+	public void createSkin(final CommandSender sender, String name, String urlString, String privateUploadString) {
 		try {
 			URL url = new URL(urlString);
 			final File skinFile = new File(skinFolder, name + ".cs");
+			boolean privateUpload = "true".equalsIgnoreCase(privateUploadString) || "yes".equalsIgnoreCase(privateUploadString) || "private".equalsIgnoreCase(privateUploadString);
 
 			if (skinFile.exists()) {
 				sender.sendMessage("§cCustom skin '" + name + "' already exists. Please choose a different name.");
@@ -90,7 +91,7 @@ public class CustomSkins extends JavaPlugin implements Listener {
 				skinFile.createNewFile();
 			}
 
-			SkullClient.create(url, new SkullCallback() {
+			SkullClient.create(url, privateUpload, new SkullCallback() {
 				@Override
 				public void waiting(long l) {
 					sender.sendMessage("§7Waiting " + (l / 1000D) + "s to upload skin...");
