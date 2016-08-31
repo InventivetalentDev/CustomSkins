@@ -52,7 +52,7 @@
                                 <includes>
                                     <include>org.mcstats.*</include>
                                     <include>org.inventivetalent:customskins**</include>
-                                    <include>org.inventivetalent:skullclient**</include>
+                                    <include>org.mineskin:java-client**</include>
                                     <include>org.inventivetalent:pluginannotations**</include>
                                     <include>org.inventivetalent.spiget-update:bukkit**</include>
                                 </includes>
@@ -100,9 +100,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.inventivetalent</groupId>
-            <artifactId>skullclient</artifactId>
-            <version>1.2.0</version>
+            <groupId>org.mineskin</groupId>
+            <artifactId>java-client</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.inventivetalent.nicknamer</groupId>

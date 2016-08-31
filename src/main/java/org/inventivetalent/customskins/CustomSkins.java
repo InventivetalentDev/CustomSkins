@@ -14,12 +14,13 @@ import org.inventivetalent.pluginannotations.PluginAnnotations;
 import org.inventivetalent.pluginannotations.command.Command;
 import org.inventivetalent.pluginannotations.command.Completion;
 import org.inventivetalent.pluginannotations.command.Permission;
-import org.inventivetalent.skullclient.SkullCallback;
-import org.inventivetalent.skullclient.SkullClient;
-import org.inventivetalent.skullclient.SkullData;
 import org.inventivetalent.update.spiget.SpigetUpdate;
 import org.inventivetalent.update.spiget.UpdateCallback;
 import org.mcstats.MetricsLite;
+import org.mineskin.MineskinClient;
+import org.mineskin.SkinOptions;
+import org.mineskin.data.Skin;
+import org.mineskin.data.SkinCallback;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -34,6 +35,8 @@ public class CustomSkins extends JavaPlugin implements Listener {
 	File        skinFolder  = new File(getDataFolder(), "skins");
 	Set<String> loadedSkins = new HashSet<>();
 
+	MineskinClient skinClient;
+
 	@Override
 	public void onEnable() {
 		if (!Bukkit.getPluginManager().isPluginEnabled("NickNamer")) {
@@ -47,6 +50,8 @@ public class CustomSkins extends JavaPlugin implements Listener {
 		}
 
 		PluginAnnotations.loadAll(this, this);
+
+		skinClient = new MineskinClient();
 
 		try {
 			MetricsLite metrics = new MetricsLite(this);
@@ -91,7 +96,9 @@ public class CustomSkins extends JavaPlugin implements Listener {
 				skinFile.createNewFile();
 			}
 
-			SkullClient.create(url, privateUpload, new SkullCallback() {
+
+			skinClient.generateUrl(url.toString(), SkinOptions.name(name), new SkinCallback() {
+
 				@Override
 				public void waiting(long l) {
 					sender.sendMessage("§7Waiting " + (l / 1000D) + "s to upload skin...");
@@ -111,16 +118,26 @@ public class CustomSkins extends JavaPlugin implements Listener {
 				}
 
 				@Override
-				public void done(SkullData skullData) {
+				public void exception(Exception exception) {
+					sender.sendMessage("§cException while generating skin, see console for details: " + exception.getMessage());
+					sender.sendMessage("§cPlease make sure the image is a valid skin texture and try again.");
+
+					skinFile.delete();
+
+					getLogger().log(Level.WARNING, "Exception while generating skin", exception);
+				}
+
+				@Override
+				public void done(Skin skin) {
 					sender.sendMessage("§aSkin data generated.");
 					JsonObject jsonObject = new JsonObject();
-					jsonObject.addProperty("id", skullData.getId().toString());
+					jsonObject.addProperty("id", skin.data.uuid.toString());
 					jsonObject.addProperty("name", "");
 
 					JsonObject property = new JsonObject();
 					property.addProperty("name", "textures");
-					property.addProperty("value", skullData.getProperties().firstTexture().getValue());
-					property.addProperty("signature", skullData.getProperties().firstTexture().getSignature());
+					property.addProperty("value", skin.data.texture.value);
+					property.addProperty("signature", skin.data.texture.signature);
 
 					JsonArray propertiesArray = new JsonArray();
 					propertiesArray.add(property);
