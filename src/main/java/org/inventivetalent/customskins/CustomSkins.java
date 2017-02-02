@@ -16,7 +16,6 @@ import org.inventivetalent.pluginannotations.command.Completion;
 import org.inventivetalent.pluginannotations.command.Permission;
 import org.inventivetalent.update.spiget.SpigetUpdate;
 import org.inventivetalent.update.spiget.UpdateCallback;
-import org.mcstats.MetricsLite;
 import org.mineskin.MineskinClient;
 import org.mineskin.SkinOptions;
 import org.mineskin.data.Skin;
@@ -52,14 +51,6 @@ public class CustomSkins extends JavaPlugin implements Listener {
 		PluginAnnotations.loadAll(this, this);
 
 		skinClient = new MineskinClient();
-
-		try {
-			MetricsLite metrics = new MetricsLite(this);
-			if (metrics.start()) {
-				getLogger().info("Metrics started");
-			}
-		} catch (Exception e) {
-		}
 
 		SpigetUpdate spigetUpdate = new SpigetUpdate(this, 25417);
 		spigetUpdate.checkForUpdate(new UpdateCallback() {
