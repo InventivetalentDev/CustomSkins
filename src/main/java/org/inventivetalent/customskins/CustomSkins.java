@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.inventivetalent.customskins.metrics.Metrics;
 import org.inventivetalent.nicknamer.api.NickNamerAPI;
 import org.inventivetalent.pluginannotations.PluginAnnotations;
 import org.inventivetalent.pluginannotations.command.Command;
@@ -51,6 +52,8 @@ public class CustomSkins extends JavaPlugin implements Listener {
 		PluginAnnotations.loadAll(this, this);
 
 		skinClient = new MineskinClient();
+
+		new Metrics(this);
 
 		SpigetUpdate spigetUpdate = new SpigetUpdate(this, 25417);
 		spigetUpdate.checkForUpdate(new UpdateCallback() {
