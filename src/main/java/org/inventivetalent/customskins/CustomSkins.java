@@ -85,7 +85,7 @@ public class CustomSkins extends JavaPlugin implements Listener {
 			boolean privateUpload = "true".equalsIgnoreCase(privateUploadString) || "yes".equalsIgnoreCase(privateUploadString) || "private".equalsIgnoreCase(privateUploadString);
 
 			if (skinFile.exists()) {
-				sender.sendMessage("Â§cCustom skin '" + name + "' already exists. Please choose a different name.");
+				sender.sendMessage("§cCustom skin '" + name + "' already exists. Please choose a different name.");
 				return;
 			} else {
 				skinFile.createNewFile();
@@ -112,26 +112,26 @@ public class CustomSkins extends JavaPlugin implements Listener {
 
 				@Override
 				public void waiting(long l) {
-					sender.sendMessage("Â§7Waiting " + (l / 1000D) + "s to upload skin...");
+					sender.sendMessage("§7Waiting " + (l / 1000D) + "s to upload skin...");
 				}
 
 				@Override
 				public void uploading() {
-					sender.sendMessage("Â§eUploading skin...");
+					sender.sendMessage("§eUploading skin...");
 				}
 
 				@Override
 				public void error(String s) {
-					sender.sendMessage("Â§cError while generating skin: " + s);
-					sender.sendMessage("Â§cPlease make sure the image is a valid skin texture and try again.");
+					sender.sendMessage("§cError while generating skin: " + s);
+					sender.sendMessage("§cPlease make sure the image is a valid skin texture and try again.");
 
 					skinFile.delete();
 				}
 
 				@Override
 				public void exception(Exception exception) {
-					sender.sendMessage("Â§cException while generating skin, see console for details: " + exception.getMessage());
-					sender.sendMessage("Â§cPlease make sure the image is a valid skin texture and try again.");
+					sender.sendMessage("§cException while generating skin, see console for details: " + exception.getMessage());
+					sender.sendMessage("§cPlease make sure the image is a valid skin texture and try again.");
 
 					skinFile.delete();
 
@@ -140,7 +140,7 @@ public class CustomSkins extends JavaPlugin implements Listener {
 
 				@Override
 				public void done(Skin skin) {
-					sender.sendMessage("Â§aSkin data generated.");
+					sender.sendMessage("§aSkin data generated.");
 					JsonObject jsonObject = new JsonObject();
 					jsonObject.addProperty("id", skin.data.uuid.toString());
 					jsonObject.addProperty("name", "");
@@ -158,16 +158,16 @@ public class CustomSkins extends JavaPlugin implements Listener {
 					try (Writer writer = new FileWriter(skinFile)) {
 						new Gson().toJson(jsonObject, writer);
 					} catch (IOException e) {
-						sender.sendMessage("Â§cFailed to save skin to file: " + e.getMessage());
+						sender.sendMessage("§cFailed to save skin to file: " + e.getMessage());
 						getLogger().log(Level.SEVERE, "Failed to save skin", e);
 					}
 				}
 			});
 		} catch (MalformedURLException e) {
-			sender.sendMessage("Â§cInvalid URL");
+			sender.sendMessage("§cInvalid URL");
 			return;
 		} catch (IOException e) {
-			sender.sendMessage("Â§cUnexpected IOException: " + e.getMessage());
+			sender.sendMessage("§cUnexpected IOException: " + e.getMessage());
 			getLogger().log(Level.SEVERE, "Unexpected IOException while creating skin '" + name + "' with source '" + urlString + "'", e);
 		}
 	}
@@ -186,28 +186,28 @@ public class CustomSkins extends JavaPlugin implements Listener {
 		Player target;
 		if (targetPlayer != null) {
 			if (!sender.hasPermission("customskins.apply.other")) {
-				sender.sendMessage("Â§cYou don't have permission to change other player's skins");
+				sender.sendMessage("§cYou don't have permission to change other player's skins");
 				return;
 			}
 			target = Bukkit.getPlayer(targetPlayer);
 			if (target == null || !target.isOnline()) {
-				sender.sendMessage("Â§cPlayer not found");
+				sender.sendMessage("§cPlayer not found");
 				return;
 			}
 		} else {
 			if (sender instanceof Player) {
 				target = (Player) sender;
 			} else {
-				sender.sendMessage("Â§cPlease specify the target player");
+				sender.sendMessage("§cPlease specify the target player");
 				return;
 			}
 		}
 
 		File skinFile = new File(skinFolder, name + ".cs");
 		if (!skinFile.exists()) {
-			sender.sendMessage("Â§cSkin '" + name + "' does not exist");
+			sender.sendMessage("§cSkin '" + name + "' does not exist");
 			if (sender.hasPermission("customskins.create")) {
-				sender.sendMessage("Â§cPlease use /createCustomSkin first");
+				sender.sendMessage("§cPlease use /createCustomSkin first");
 			}
 			return;
 		}
@@ -215,7 +215,7 @@ public class CustomSkins extends JavaPlugin implements Listener {
 		try {
 			skinData = new JsonParser().parse(new FileReader(skinFile)).getAsJsonObject();
 		} catch (IOException e) {
-			sender.sendMessage("Â§cFailed to load skin from file: " + e.getMessage());
+			sender.sendMessage("§cFailed to load skin from file: " + e.getMessage());
 			getLogger().log(Level.SEVERE, "Failed to load skin", e);
 			return;
 		}
@@ -226,7 +226,7 @@ public class CustomSkins extends JavaPlugin implements Listener {
 		}
 
 		NickNamerAPI.getNickManager().setCustomSkin(target.getUniqueId(), "cs_" + name);
-		sender.sendMessage("Â§aCustom skin changed to " + name);
+		sender.sendMessage("§aCustom skin changed to " + name);
 	}
 
 	@Completion(name = "applycustomskin")
