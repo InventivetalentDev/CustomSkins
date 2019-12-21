@@ -95,7 +95,7 @@
         <dependency>
             <groupId>org.inventivetalent.nicknamer</groupId>
             <artifactId>api</artifactId>
-            <version>3.13.1-SNAPSHOT</version>
+            <version>3.17.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
