@@ -212,6 +212,23 @@ public class CustomSkins extends JavaPlugin implements Listener {
 		sender.sendMessage("§aCustom skin changed to " + name);
 	}
 
+	@Command(name = "listcustomskins",
+			 aliases = {
+					 "listSkins" },
+			 usage = "",
+			 description = "Get a list of generated custom skins",
+			 min = 0,
+			 max = 0,
+			 fallbackPrefix = "customskins")
+	@Permission("customskins.list")
+	public void listSkins(CommandSender sender) {
+		for (String s : skinFolder.list()) {
+			if (s.endsWith(".cs")) {
+				sender.sendMessage(s);
+			}
+		}
+	}
+
 	@Completion(name = "applycustomskin")
 	public void applySkin(List<String> completions, CommandSender sender, String name, String targetName) {
 		if (sender.hasPermission("customskins.apply")) {
