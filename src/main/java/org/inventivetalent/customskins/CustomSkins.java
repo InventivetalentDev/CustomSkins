@@ -18,7 +18,9 @@ import org.inventivetalent.pluginannotations.command.Permission;
 import org.inventivetalent.update.spiget.SpigetUpdate;
 import org.inventivetalent.update.spiget.UpdateCallback;
 import org.mineskin.MineskinClient;
+import org.mineskin.Model;
 import org.mineskin.SkinOptions;
+import org.mineskin.Visibility;
 import org.mineskin.data.Skin;
 import org.mineskin.data.SkinCallback;
 
@@ -71,17 +73,18 @@ public class CustomSkins extends JavaPlugin implements Listener {
 
 	@Command(name = "createCustomSkin",
 			 aliases = { "createSkin" },
-			 usage = "<Name> <URL> [private]",
+			 usage = "<Name> <URL> [private] [model]",
 			 description = "Create a custom skin from the specified image url",
 			 min = 2,
-			 max = 3,
+			 max = 4,
 			 fallbackPrefix = "customskins")
 	@Permission("customskins.create")
-	public void createSkin(final CommandSender sender, String name, String urlString, String privateUploadString) {
+	public void createSkin(final CommandSender sender, String name, String urlString, String privateUploadString, String modelString) {
 		try {
 			URL url = new URL(urlString);
 			final File skinFile = new File(skinFolder, name + ".cs");
 			boolean privateUpload = "true".equalsIgnoreCase(privateUploadString) || "yes".equalsIgnoreCase(privateUploadString) || "private".equalsIgnoreCase(privateUploadString);
+			Model model = ("alex".equalsIgnoreCase(modelString) || "slim".equalsIgnoreCase(modelString)) ? Model.SLIM: Model.DEFAULT;
 
 			if (skinFile.exists()) {
 				sender.sendMessage("§cCustom skin '" + name + "' already exists. Please choose a different name.");
@@ -91,7 +94,7 @@ public class CustomSkins extends JavaPlugin implements Listener {
 			}
 
 
-			skinClient.generateUrl(url.toString(), SkinOptions.name(name), new SkinCallback() {
+			skinClient.generateUrl(url.toString(), SkinOptions.create(name, model, privateUpload ? Visibility.PRIVATE : Visibility.PUBLIC), new SkinCallback() {
 
 				@Override
 				public void waiting(long l) {
