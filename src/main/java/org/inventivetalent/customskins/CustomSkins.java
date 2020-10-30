@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.customskins.metrics.Metrics;
 import org.inventivetalent.nicknamer.api.NickNamerAPI;
+import org.inventivetalent.nicknamer.api.SkinLoader;
 import org.inventivetalent.pluginannotations.PluginAnnotations;
 import org.inventivetalent.pluginannotations.command.Command;
 import org.inventivetalent.pluginannotations.command.Completion;
@@ -75,14 +76,28 @@ public class CustomSkins extends JavaPlugin implements Listener {
 			 aliases = { "createSkin" },
 			 usage = "<Name> <URL> [private] [model]",
 			 description = "Create a custom skin from the specified image url",
-			 min = 2,
+			 min = 1,
 			 max = 4,
 			 fallbackPrefix = "customskins")
 	@Permission("customskins.create")
 	public void createSkin(final CommandSender sender, String name, String urlString, String privateUploadString, String modelString) {
+		final File skinFile = new File(skinFolder, name + ".cs");
+		if (sender instanceof Player && urlString == null) {
+			Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+				sender.sendMessage("§eLoading skin...");
+				try (Writer writer = new FileWriter(skinFile)) {
+					new Gson().toJson(SkinLoader.loadSkin(sender.getName()).toJson(), writer);
+				} catch (IOException e) {
+					sender.sendMessage("§cFailed to save skin to file: " + e.getMessage());
+					getLogger().log(Level.SEVERE, "Failed to save skin", e);
+				}
+				sender.sendMessage("§aSkin data saved.");
+			});
+			return;
+		}
+
 		try {
 			URL url = new URL(urlString);
-			final File skinFile = new File(skinFolder, name + ".cs");
 			boolean privateUpload = "true".equalsIgnoreCase(privateUploadString) || "yes".equalsIgnoreCase(privateUploadString) || "private".equalsIgnoreCase(privateUploadString);
 			Model model = ("alex".equalsIgnoreCase(modelString) || "slim".equalsIgnoreCase(modelString)) ? Model.SLIM: Model.DEFAULT;
 
